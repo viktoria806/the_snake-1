@@ -43,24 +43,30 @@ clock = pygame.time.Clock()
 class GameObject:
     """Это докстриг"""
 
-    def __init__(self, body_color: tuple = (255, 0, 0),
-                 position: tuple = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
-                 ):
+    def __init__(
+        self,
+        body_color: tuple = (255, 0, 0),
+        position: tuple = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)),
+    ):
         self.position = position
         self.body_color = body_color
 
     def draw(self):
         """Это докстриг"""
-        pass
 
 
 class Apple(GameObject):
     """Это докстриг"""
 
-    def __init__(self, body_color=(255, 0, 0),
-                 position=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))):
-        super().__init__(body_color=(255, 0, 0),
-                         position=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)))
+    def __init__(
+        self,
+        body_color=(255, 0, 0),
+        position=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)),
+    ):
+        super().__init__(
+            body_color=(255, 0, 0),
+            position=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)),
+        )
         self.body_color = (255, 0, 0)
         self.position = self.randomize_position()
 
@@ -85,10 +91,19 @@ class Apple(GameObject):
 class Snake(GameObject):
     """Это докстриг"""
 
-    def __init__(self, position=(0, 0), length: int = 1,
-                 positions: list[tuple] = [(0, 0)],
-                 direction: tuple = RIGHT, next_direction: tuple = None,
-                 body_color=(0, 255, 0)):
+    def __init__(
+        self,
+        position=(0, 0),
+        length: int = 1,
+        positions: list[tuple] = [(0, 0)],
+        direction: tuple = RIGHT,
+        # Синтаксис Python 3.10+:
+        # вертикальная черта | означает "ИЛИ" (Union).
+        # Переменная принимает тип tuple ИЛИ None.
+        # Значение по умолчанию = None.
+        next_direction: tuple | None = None,
+        body_color=(0, 255, 0),
+    ):
         super().__init__(body_color, position)
         self.length = length
         self.positions = positions
@@ -110,7 +125,7 @@ class Snake(GameObject):
 
         new_head = (
             (head[0] + dx * GRID_SIZE) % SCREEN_WIDTH,
-            (head[1] + dy * GRID_SIZE) % SCREEN_HEIGHT
+            (head[1] + dy * GRID_SIZE) % SCREEN_HEIGHT,
         )
 
         if new_head in self.positions:
@@ -123,7 +138,7 @@ class Snake(GameObject):
     def draw(self):
         """Это докстриг"""
         for position in self.positions[:-1]:
-            rect = (pygame.Rect(position, (GRID_SIZE, GRID_SIZE)))
+            rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(screen, self.body_color, rect)
             pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
@@ -156,7 +171,7 @@ def handle_keys(game_object):
         if event.type == pygame.QUIT:
             pygame.quit()
             raise SystemExit
-        elif event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP and game_object.direction != DOWN:
                 game_object.next_direction = UP
             elif event.key == pygame.K_DOWN and game_object.direction != UP:
